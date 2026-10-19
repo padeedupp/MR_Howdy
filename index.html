@@ -514,7 +514,7 @@
 
     <!-- แถบปุ่ม SAVE ขวาบน (ใต้แถบธาตุ) -->
     <div class="sub-bar-action">
-        <button class="btn-save-banner" onclick="saveAllEditChanges()">💾 SAVE (บันทึกการแก้ไข)</button>
+        <button class="btn-save-banner" onclick="saveAllEditChanges()">💾 SAVE</button>
     </div>
 
     <!-- 1. Page HOME -->
@@ -939,7 +939,7 @@
                     
                     let nextLvText = nextLvData.isMax 
                         ? `<span style="color: var(--primary);">MAX LV.10</span>` 
-                        : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+                        : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> to Lv.${nextLvData.nextLv}`;
 
                     cellsHtml += `
                         <div class="monster-cell">
@@ -1062,7 +1062,7 @@
         if (nextInfoEl) {
             nextInfoEl.innerHTML = nextLvData.isMax 
                 ? `<span style="color: var(--primary);">MAX LV.10</span>` 
-                : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+                : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> to Lv.${nextLvData.nextLv}`;
         }
 
         updateRowHeaders(elem);
@@ -1137,7 +1137,7 @@
                     <td><strong style="color: var(--text);">${m.name}</strong></td>
                     <td><span class="badge ${badgeClass}">${m.type}</span></td>
                     <td>${m.element}</td>
-                    <td>${m.nextRemaining.toLocaleString()} (ถึง Lv.${m.nextLv})</td>
+                    <td>${m.nextRemaining.toLocaleString()} (to Lv.${m.nextLv})</td>
                     <td><span style="color: var(--primary); font-weight: bold;">${m.nextExpGain.toLocaleString()} EXP</span></td>
                 </tr>
             `;
