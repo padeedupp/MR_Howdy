@@ -637,6 +637,15 @@
 
     const levelExpValues = [300, 500, 800, 1200, 1600, 2000, 2400, 2800, 3200, 4000];
 
+    // ฟังก์ชันช่วยรวมผลสะสม EXP ตั้งแต่เลเวล 1 จนถึงเลเวลเป้าหมาย
+    function getCumulativeExp(targetLv) {
+        let total = 0;
+        for (let i = 0; i < targetLv && i < levelExpValues.length; i++) {
+            total += levelExpValues[i];
+        }
+        return total;
+    }
+
     function getLevelColor(lv) {
         const colors = {
             0: "#30363D", 1: "#3b82f6", 2: "#0ea5e9", 3: "#10b981", 4: "#84cc16",
@@ -645,7 +654,6 @@
         return colors[lv] || "#30363D";
     }
 
-    // ฐานข้อมูลแบบ Hardcode ถาวรในโค้ด (แก้ไขค่า qty ตรงนี้เพื่อเปลี่ยนค่าเริ่มต้น)
     const rawData = {
         "NONE": [
             { name: "Lunatic", type: "Monster", maxQty: 450000, qty: 132789 },
@@ -770,7 +778,7 @@
 
     let maxNextFilter = 300000;
     let currentTheme = 'dark';
-    let currentActiveTab = 'NONE'; // เก็บแท็ลปัจจุบันไว้เพื่อไม่ให้หน้าเว็บเด้งกลับไปหน้าอื่น
+    let currentActiveTab = 'NONE';
 
     document.body.setAttribute('data-theme', currentTheme);
     document.getElementById('fabThemeBtn').innerText = '🌙';
@@ -914,7 +922,6 @@
         Object.keys(rawData).forEach(elem => {
             const div = document.createElement('div');
             div.id = elem;
-            // คงสถานะหน้าเดิมเอาไว้ ไม่ให้เด้งตอนเพิ่มมอนสเตอร์หรือแก้ไข
             div.className = (currentActiveTab === elem) ? 'tab-content active' : 'tab-content';
 
             const monsters = rawData[elem];
@@ -1034,7 +1041,7 @@
             return;
         }
 
-        currentActiveTab = elem; // ล็อกแท็บปัจจุบันไว้ไม่ให้หน้าจอเปลี่ยนไปหน้าแรก
+        currentActiveTab = elem;
         rawData[elem].push({ name, type, maxQty, qty });
 
         initElementPages();
@@ -1090,13 +1097,23 @@
 
         Object.keys(rawData).forEach(elem => {
             const monsters = rawData[elem];
+            
+            // 1. คำนวณ EXP สะสมจากเลเวลรายตัว (ตั้งแต่ Lv.1 ถึงเลเวลปัจจุบันของมอนสเตอร์แต่ละตัว)
+            monsters.forEach(m => {
+                const currentLv = calculateLevel(m.type, m.qty);
+                if (currentLv > 0) {
+                    totalAccumulatedExp += getCumulativeExp(currentLv);
+                }
+            });
+
+            // 2. คำนวณ EXP สะสมจากเลเวลแถว (ตั้งแต่ Lv.1 ถึงเลเวลต่ำสุดของแต่ละแถว)
             for (let i = 0; i < monsters.length; i += 5) {
                 const chunk = monsters.slice(i, i + 5);
                 let rowLvList = chunk.map(m => calculateLevel(m.type, m.qty));
                 let minLv = (chunk.length === 5) ? Math.min(...rowLvList) : 0;
                 
                 if (minLv > 0) {
-                    totalAccumulatedExp += levelExpValues[minLv - 1];
+                    totalAccumulatedExp += getCumulativeExp(minLv);
                 }
             }
 
@@ -1121,6 +1138,7 @@
             });
         });
 
+        // นำ (1) ผลรวมเลเวลรายตัว + (2) ผลรวมเลเวลแถว มารวมกันแสดงผล
         document.getElementById('totalExpDisplay').innerText = `${totalAccumulatedExp.toLocaleString()} exp`;
 
         let validMonsters = allMonsters.filter(m => !m.isMax && m.nextRemaining < filterVal);
@@ -1168,7 +1186,6 @@
         document.getElementById('focusMvpBody').innerHTML = mvpHtml || `<tr><td colspan="4" style="color: var(--text-muted);">ไม่มีข้อมูล MVP</td></tr>`;
     }
 
-    // เริ่มต้นแสดงผลหน้าเว็บ
     initElementPages();
     renderFocusPage();
 </script>
