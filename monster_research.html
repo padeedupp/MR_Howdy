@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Research ROOC</title>
+    <style>
+        :root {
+            --bg: #0A0E17;
+            --head: #BB86FC;
+            --card-bg: #161B26;
+            --primary: #00F0FF;
+            --primary-hover: #00c2cc;
+            --secondary: #FF0055;
+            --accent-purple: #BC13FE;
+            --warning: #F59E0B;
+            --warning-hover: #d97706;
+            --danger: #EF4444;
+            --text: #F0F6FC;
+            --text-muted: #8B949E;
+            --border: #30363D;
+            --cell-bg: #0A0E17;
+            
+            --ref-bg: #000000;
+            --ref-text: #fecaca;
+            --ref-border: #7f1d1d;
+            --ref-card-bg: #000000;
+        }
+        [data-theme="light"] {
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #db2777;
+            --accent-purple: #9333ea;
+            --warning: #d97706;
+            --warning-hover: #b45309;
+            --danger: #dc2626;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --cell-bg: #f8fafc;
+
+            --ref-bg: #000000;
+            --ref-text: #fecaca;
+            --ref-border: #7f1d1d;
+            --ref-card-bg: #000000;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-muted);
+            margin: 0;
+            padding: 20px;
+            padding-bottom: 100px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        h1 {
+            color: var(--head);
+            margin: 0;
+            text-shadow: 0 0 10px rgba(240, 246, 252, 0.2);
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .total-exp-box-mini {
+            background: var(--card-bg);
+            border: 1px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: right;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+        .total-exp-box-mini .label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .total-exp-box-mini .exp-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0;
+        }
+        
+        .sub-bar-action {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            min-height: 38px;
+        }
+        .btn-save-banner {
+            display: none;
+            background: #10B981;
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+            transition: 0.2s;
+        }
+        .btn-save-banner:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+        body.edit-mode-active .btn-save-banner {
+            display: inline-block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--accent-purple);
+            color: #ffffff;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 12px rgba(188, 19, 254, 0.5);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        .card h2, .card h3 {
+            color: var(--text);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+            color: var(--text-muted);
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: var(--card-bg);
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+        input[type="number"], input[type="text"], select {
+            padding: 6px;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--bg);
+            color: var(--text);
+            font-weight: bold;
+        }
+        .badge {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .badge-monster { background: rgba(0, 240, 255, 0.1); color: var(--primary); border: 1px solid rgba(0, 240, 255, 0.3); }
+        .badge-mvp { background: rgba(255, 0, 85, 0.1); color: var(--secondary); border: 1px solid rgba(255, 0, 85, 0.3); }
+        .badge-mini { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        
+        .flex-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .flex-col {
+            flex: 1;
+            min-width: 350px;
+        }
+        .row-group {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .row-header {
+            min-width: 80px;
+            color: #ffffff;
+            padding: 15px 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
+        }
+        .grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            flex-grow: 1;
+        }
+        .monster-cell {
+            background: var(--cell-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            position: relative;
+        }
+        .monster-name {
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text);
+        }
+        .next-lv-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .delete-btn-symbol {
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 12px;
+            line-height: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        body.edit-mode-active .delete-btn-symbol {
+            display: block;
+        }
+        .edit-input-field {
+            display: none;
+            width: 90%;
+            margin: 2px auto;
+            font-size: 12px;
+        }
+        body.edit-mode-active .monster-name-text,
+        body.edit-mode-active .monster-type-badge {
+            display: none;
+        }
+        body.edit-mode-active .edit-input-field {
+            display: inline-block;
+        }
+
+        .add-box {
+            background: var(--cell-bg);
+            border: 1px dashed var(--border);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .warning-btn {
+            background: var(--warning);
+            color: #0A0E17;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .warning-btn:hover {
+            background: var(--warning-hover);
+        }
+
+        /* --- Floating Speed Dial Menu มุมขวาล่าง (ปุ่ม ^) --- */
+        .fab-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            gap: 12px;
+            z-index: 999;
+        }
+        .fab-main {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fab-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .fab-container:hover .fab-options,
+        .fab-container.active .fab-options {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .fab-container:hover .fab-main,
+        .fab-container.active .fab-main {
+            transform: rotate(180deg);
+            background: var(--primary);
+            color: var(--bg);
+        }
+        .fab-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+        .fab-label {
+            background: var(--card-bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        .fab-sub-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: 0.2s;
+        }
+        .fab-sub-btn:hover {
+            transform: scale(1.1);
+        }
+        .fab-sub-home { border-color: var(--accent-purple); color: var(--accent-purple); }
+        .fab-sub-edit { border-color: var(--warning); color: var(--warning); }
+        .fab-sub-theme { border-color: var(--primary); color: var(--primary); }
+        .fab-sub-ref { border-color: #fecaca; color: #fecaca; background: #000000; }
+
+        body.edit-mode-active .fab-sub-edit {
+            background: var(--warning);
+            color: #0A0E17;
+            box-shadow: 0 0 12px var(--warning);
+        }
+
+        /* Modal Reference Table Pop-up */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #000000;
+            border: 2px solid #7f1d1d;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 35px rgba(127, 29, 29, 0.8);
+            color: #fecaca;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #7f1d1d;
+            padding-bottom: 10px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            color: #fecaca;
+        }
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            color: #fecaca;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .btn-close-modal:hover {
+            opacity: 1;
+        }
+        .ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin-top: 10px;
+            color: #fecaca;
+            background-color: #000000;
+        }
+        .ref-table th, .ref-table td {
+            border: 1px solid #7f1d1d;
+            padding: 8px;
+            text-align: center;
+        }
+        .ref-table th {
+            background-color: #1a0505;
+            color: #fecaca;
+            border-bottom: 2px solid #7f1d1d;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+<div class="container">
+    <div class="header-bar">
+        <h1>Monster Research ROOC</h1>
+        <div class="header-right">
+            <div class="total-exp-box-mini">
+                <p class="label">EXP สะสมรวม (Research Progress)</p>
+                <p class="exp-number" id="totalExpDisplay">0 แต้ม</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation (เฉพาะธาตุ) -->
+    <div class="tabs" id="elementalTabsNav">
+        <button class="tab-btn" onclick="switchTab('NONE')">NONE</button>
+        <button class="tab-btn" onclick="switchTab('WIND')">WIND</button>
+        <button class="tab-btn" onclick="switchTab('EARTH')">EARTH</button>
+        <button class="tab-btn" onclick="switchTab('FIRE')">FIRE</button>
+        <button class="tab-btn" onclick="switchTab('WATER')">WATER</button>
+        <button class="tab-btn" onclick="switchTab('POISON')">POISON</button>
+        <button class="tab-btn" onclick="switchTab('HOLY')">HOLY</button>
+        <button class="tab-btn" onclick="switchTab('SHADOW')">SHADOW</button>
+        <button class="tab-btn" onclick="switchTab('GHOST')">GHOST</button>
+        <button class="tab-btn" onclick="switchTab('UNDEAD')">UNDEAD</button>
+    </div>
+
+    <!-- แถบปุ่ม SAVE ขวาบน (ใต้แถบธาตุ) -->
+    <div class="sub-bar-action">
+        <button class="btn-save-banner" onclick="saveAllEditChanges()">💾 SAVE (บันทึกการแก้ไข)</button>
+    </div>
+
+    <!-- 1. Page HOME -->
+    <div id="focus" class="tab-content active">
+        <div class="card">
+            <h2>HOME Settings & MVP</h2>
+            <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <label style="color: var(--text-muted);"><strong>แสดงตัวที่ขาดน้อยกว่า: </strong></label>
+                    <input type="number" id="maxNextFilterInput" value="300000" step="10000" onchange="saveMaxNextFilter(this.value)" style="width: 110px;">
+                    <span style="color: var(--text-muted); font-size: 13px;"> ตัว (เรียงจากน้อยไปมาก)</span>
+                </div>
+                <button class="warning-btn" onclick="resetAllQuantities()">RESET</button>
+            </div>
+            
+            <div class="flex-container">
+                <div class="flex-col">
+                    <h3>Monster ทั่วไป (เฉพาะที่ขาด < ค่าที่กำหนด)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ชื่อ</th>
+                                <th>ประเภท</th>
+                                <th>ธาตุ</th>
+                                <th>จำนวนที่ขาด (ถึง Lv.ถัดไป)</th>
+                                <th>EXP ที่จะได้</th>
+                            </tr>
+                        </thead>
+                        <tbody id="focusMonsterBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="flex-col">
+                    <h3>MVP ทั้งหมดจากทุกธาตุ</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ชื่อ</th>
+                                <th>ประเภท</th>
+                                <th>ธาตุ</th>
+                                <th>จำนวนที่ขาด (Next)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="focusMvpBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Elemental Tabs Container -->
+    <div id="elementTabsContainer"></div>
+
+</div>
+
+<!-- Floating Speed Dial Menu มุมขวาล่าง (ปุ่ม ^) -->
+<div class="fab-container" id="fabContainer">
+    <button class="fab-main" onclick="toggleFabMenu()" title="เมนูลัด">^</button>
+    <div class="fab-options">
+        <div class="fab-item" onclick="switchToHomeTab()">
+            <span class="fab-label">HOME</span>
+            <button class="fab-sub-btn fab-sub-home" title="หน้าหลัก HOME">🏠</button>
+        </div>
+        <div class="fab-item" onclick="toggleEditMode()">
+            <span class="fab-label">EDIT MODE</span>
+            <button class="fab-sub-btn fab-sub-edit" title="โหมดแก้ไข">⚙️</button>
+        </div>
+        <div class="fab-item" onclick="toggleTheme()">
+            <span class="fab-label">THEME MODE</span>
+            <button class="fab-sub-btn fab-sub-theme" id="fabThemeBtn" title="สลับธีม">🌙</button>
+        </div>
+        <div class="fab-item" onclick="openRefModal()">
+            <span class="fab-label">REFERENCE</span>
+            <button class="fab-sub-btn fab-sub-ref" title="ตารางอ้างอิง">📖</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Reference Table Pop-up -->
+<div class="modal-overlay" id="refModalOverlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>📖 REFERENCE TABLE (เกณฑ์จำนวน & EXP)</h3>
+            <button class="btn-close-modal" onclick="closeRefModal()">&times;</button>
+        </div>
+        <p style="font-size: 13px; margin-bottom: 15px; opacity: 0.9;">
+            ตารางแสดงเป้าหมายการสังหารที่ต้องใช้เพื่อปลดล็อกแต่ละ Level และคะแนน EXP สะสมที่ได้รับ
+        </p>
+        <table class="ref-table">
+            <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>Monster ทั่วไป (ตัว)</th>
+                    <th>Mini / MVP (ตัว)</th>
+                    <th>EXP ได้รับ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Lv.1</strong></td><td>10</td><td>1</td><td><strong style="color: #ffffff;">300 EXP</strong></td></tr>
+                <tr><td><strong>Lv.2</strong></td><td>500</td><td>3</td><td><strong style="color: #ffffff;">500 EXP</strong></td></tr>
+                <tr><td><strong>Lv.3</strong></td><td>3,500</td><td>7</td><td><strong style="color: #ffffff;">800 EXP</strong></td></tr>
+                <tr><td><strong>Lv.4</strong></td><td>10,000</td><td>14</td><td><strong style="color: #ffffff;">1,200 EXP</strong></td></tr>
+                <tr><td><strong>Lv.5</strong></td><td>22,000</td><td>25</td><td><strong style="color: #ffffff;">1,600 EXP</strong></td></tr>
+                <tr><td><strong>Lv.6</strong></td><td>48,000</td><td>40</td><td><strong style="color: #ffffff;">2,000 EXP</strong></td></tr>
+                <tr><td><strong>Lv.7</strong></td><td>100,000</td><td>55</td><td><strong style="color: #ffffff;">2,400 EXP</strong></td></tr>
+                <tr><td><strong>Lv.8</strong></td><td>175,000</td><td>75</td><td><strong style="color: #ffffff;">2,800 EXP</strong></td></tr>
+                <tr><td><strong>Lv.9</strong></td><td>300,000</td><td>100</td><td><strong style="color: #ffffff;">3,200 EXP</strong></td></tr>
+                <tr><td><strong>Lv.10</strong></td><td>450,000</td><td>130</td><td><strong style="color: #ffffff;">4,000 EXP</strong></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const researchData = {
+        "Monster": { thresholds: [10, 500, 3500, 10000, 22000, 48000, 100000, 175000, 300000, 450000] },
+        "Mini": { thresholds: [1, 3, 7, 14, 25, 40, 55, 75, 100, 130] },
+        "MVP": { thresholds: [1, 3, 7, 14, 25, 40, 55, 75, 100, 130] }
+    };
+
+    const levelExpValues = [300, 500, 800, 1200, 1600, 2000, 2400, 2800, 3200, 4000];
+
+    function getLevelColor(lv) {
+        const colors = {
+            0: "#30363D", 1: "#3b82f6", 2: "#0ea5e9", 3: "#10b981", 4: "#84cc16",
+            5: "#eab308", 6: "#f97316", 7: "#ef4444", 8: "#ec4899", 9: "#BC13FE", 10: "#00F0FF"
+        };
+        return colors[lv] || "#30363D";
+    }
+
+    const defaultRawData = {
+        "NONE": [
+            { name: "Lunatic", type: "Monster", maxQty: 450000, qty: 132789 },
+            { name: "Peco Peco Egg", type: "Monster", maxQty: 450000, qty: 332163 },
+            { name: "Ant Egg", type: "Monster", maxQty: 300000, qty: 185423 },
+            { name: "Eclipse", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Golem", type: "Monster", maxQty: 175000, qty: 100917 },
+            { name: "Mimic", type: "Monster", maxQty: 300000, qty: 214162 },
+            { name: "Phreeoni", type: "MVP", maxQty: 130, qty: 130 },
+            { name: "Sasquatch", type: "Monster", maxQty: 300000, qty: 201398 },
+            { name: "Rideword", type: "Monster", maxQty: 100000, qty: 60596 },
+            { name: "Rybio", type: "Monster", maxQty: 175000, qty: 137490 },
+            { name: "Alice", type: "Monster", maxQty: 100000, qty: 59454 }
+        ],
+        "WIND": [
+            { name: "Chonchon", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Condor", type: "Monster", maxQty: 300000, qty: 231810 },
+            { name: "Creamy", type: "Monster", maxQty: 450000, qty: 341322 },
+            { name: "Dragon Fly", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Steel Chonchon", type: "Monster", maxQty: 450000, qty: 407792 },
+            { name: "Goblin (Dagger)", type: "Monster", maxQty: 450000, qty: 346254 },
+            { name: "Rotar Zario", type: "Monster", maxQty: 300000, qty: 286540 },
+            { name: "Goblin (Steam)", type: "Monster", maxQty: 450000, qty: 455000 },
+            { name: "Goblin Leader", type: "MVP", maxQty: 130, qty: 124 },
+            { name: "Stem Worm", type: "Monster", maxQty: 450000, qty: 421977 },
+            { name: "Hornet", type: "Monster", maxQty: 300000, qty: 287280 },
+            { name: "Dustiness", type: "Monster", maxQty: 300000, qty: 242362 }
+        ],
+        "EARTH": [
+            { name: "Pupa", type: "Monster", maxQty: 300000, qty: 177441 },
+            { name: "Fabre", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Willow", type: "Monster", maxQty: 175000, qty: 145320 },
+            { name: "Savage Babe", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Worm Tail", type: "Monster", maxQty: 300000, qty: 189277 },
+            { name: "Yoyo", type: "Monster", maxQty: 450000, qty: 336231 },
+            { name: "Smokie", type: "Monster", maxQty: 450000, qty: 302521 },
+            { name: "Boa", type: "Monster", maxQty: 300000, qty: 210453 },
+            { name: "Bigfoot", type: "Monster", maxQty: 300000, qty: 253691 },
+            { name: "Steel Fur Grizzly", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Rocker", type: "Monster", maxQty: 175000, qty: 124580 },
+            { name: "Vocal", type: "Mini", maxQty: 130, qty: 130 }
+        ],
+        "FIRE": [
+            { name: "Picky", type: "Monster", maxQty: 300000, qty: 181930 },
+            { name: "Super Picky", type: "Monster", maxQty: 300000, qty: 249344 },
+            { name: "Drops", type: "Monster", maxQty: 175000, qty: 110006 },
+            { name: "Baby Desert Wolf", type: "Monster", maxQty: 300000, qty: 188666 },
+            { name: "Scorpion", type: "Monster", maxQty: 300000, qty: 213865 },
+            { name: "Choco", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Peco Peco", type: "Monster", maxQty: 450000, qty: 300000 },
+            { name: "Elder Willow", type: "Monster", maxQty: 175000, qty: 167428 },
+            { name: "Golden Thief Bug", type: "MVP", maxQty: 130, qty: 111 },
+            { name: "Goblin (Hammer)", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Metaller", type: "Monster", maxQty: 300000, qty: 182864 },
+            { name: "Minorous", type: "Monster", maxQty: 300000, qty: 211264 }
+        ],
+        "WATER": [
+            { name: "Poring", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Spore", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Mastering", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Hydra", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Plankton", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Roda Frog", type: "Monster", maxQty: 450000, qty: 500000 },
+            { name: "Toad", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Thara Frog", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Marina", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Marine Sphere", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Ambernite", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Vadon", type: "Monster", maxQty: 450000, qty: 450000 }
+        ],
+        "POISON": [
+            { name: "Poporing", type: "Monster", maxQty: 450000, qty: 424910 },
+            { name: "Poison Spore", type: "Monster", maxQty: 450000, qty: 450253 },
+            { name: "Argos", type: "Monster", maxQty: 450000, qty: 348486 },
+            { name: "Argiope", type: "Monster", maxQty: 300000, qty: 285672 },
+            { name: "Side Winder", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Goblin (Archer)", type: "Monster", maxQty: 300000, qty: 289999 },
+            { name: "Myst", type: "Monster", maxQty: 300000, qty: 179862 },
+            { name: "Penomena", type: "Monster", maxQty: 175000, qty: 161111 },
+            { name: "Cramp", type: "Monster", maxQty: 300000, qty: 244934 },
+            { name: "Hammer Kobold", type: "Monster", maxQty: 300000, qty: 285570 }
+        ],
+        "HOLY": [
+            { name: "Angeling", type: "MVP", maxQty: 130, qty: 130 }
+        ],
+        "SHADOW": [
+            { name: "Thief Bug Egg", type: "Monster", maxQty: 300000, qty: 245371 },
+            { name: "Thief Bug", type: "Monster", maxQty: 450000, qty: 354272 },
+            { name: "Tarou", type: "Monster", maxQty: 450000, qty: 355792 },
+            { name: "Thief Bug Female", type: "Monster", maxQty: 300000, qty: 276065 },
+            { name: "Thief Bug Male", type: "Monster", maxQty: 300000, qty: 187378 },
+            { name: "Familiar", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Drainliar", type: "Monster", maxQty: 450000, qty: 450000 },
+            { name: "Deviling", type: "MVP", maxQty: 130, qty: 97 },
+            { name: "Matyr", type: "Monster", maxQty: 175000, qty: 131054 },
+            { name: "Infernal Goblin", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Isis", type: "Monster", maxQty: 300000, qty: 175000 },
+            { name: "Requiem", type: "Monster", maxQty: 100000, qty: 95376 }
+        ],
+        "GHOST": [
+            { name: "Whisper", type: "Monster", maxQty: 300000, qty: 241625 },
+            { name: "Eggyra", type: "Monster", maxQty: 450000, qty: 335635 },
+            { name: "Nightmare", type: "Monster", maxQty: 300000, qty: 194655 },
+            { name: "Ghostring", type: "Mini", maxQty: 130, qty: 130 },
+            { name: "Marionette", type: "Monster", maxQty: 450000, qty: 450000 }
+        ],
+        "UNDEAD": [
+            { name: "Zombie", type: "Monster", maxQty: 450000, qty: 403602 },
+            { name: "Munak", type: "Monster", maxQty: 450000, qty: 404761 },
+            { name: "Bongun", type: "Monster", maxQty: 300000, qty: 200890 },
+            { name: "Orc zombie", type: "Monster", maxQty: 450000, qty: 304174 },
+            { name: "Ghoul", type: "Monster", maxQty: 450000, qty: 300068 },
+            { name: "Skeleton", type: "Monster", maxQty: 300000, qty: 273997 },
+            { name: "Pirate Skeleton", type: "Monster", maxQty: 300000, qty: 294828 },
+            { name: "Soldier Skeleton", type: "Monster", maxQty: 450000, qty: 373657 },
+            { name: "Archer Skeleton", type: "Monster", maxQty: 300000, qty: 280984 },
+            { name: "Drake", type: "MVP", maxQty: 130, qty: 130 },
+            { name: "Megalodon", type: "Monster", maxQty: 175000, qty: 114617 },
+            { name: "Mummy", type: "Monster", maxQty: 450000, qty: 550009 }
+        ]
+    };
+
+    let rawData = JSON.parse(localStorage.getItem('rooc_raw_data')) || defaultRawData;
+    let maxNextFilter = localStorage.getItem('rooc_max_next_filter') || 300000;
+    let currentTheme = localStorage.getItem('rooc_theme') || 'dark';
+
+    document.body.setAttribute('data-theme', currentTheme);
+    document.getElementById('fabThemeBtn').innerText = currentTheme === 'dark' ? '🌙' : '☀️';
+    document.getElementById('maxNextFilterInput').value = maxNextFilter;
+
+    function saveData() {
+        localStorage.setItem('rooc_raw_data', JSON.stringify(rawData));
+    }
+
+    function saveMaxNextFilter(val) {
+        maxNextFilter = parseInt(val) || 300000;
+        localStorage.setItem('rooc_max_next_filter', maxNextFilter);
+        renderFocusPage();
+    }
+
+    function resetAllQuantities() {
+        if (confirm('คุณต้องการล้างจำนวน (QTY) ออกจากทุกช่องทั้งหมด ให้เป็น 0 หรือไม่?')) {
+            Object.keys(rawData).forEach(elem => {
+                rawData[elem].forEach(m => {
+                    m.qty = 0;
+                });
+            });
+            saveData();
+            initElementPages();
+            renderFocusPage();
+        }
+    }
+
+    function calculateLevel(type, qty) {
+        const thresholds = researchData[type] ? researchData[type].thresholds : researchData["Monster"].thresholds;
+        let lv = 0;
+        for (let i = 0; i < thresholds.length; i++) {
+            if (qty >= thresholds[i]) {
+                lv = i + 1;
+            } else {
+                break;
+            }
+        }
+        return lv;
+    }
+
+    function calculateNextLevelTarget(type, qty) {
+        const thresholds = researchData[type] ? researchData[type].thresholds : researchData["Monster"].thresholds;
+        const currentLv = calculateLevel(type, qty);
+        if (currentLv >= thresholds.length) {
+            return { nextLv: 10, remaining: 0, isMax: true };
+        }
+        const targetQty = thresholds[currentLv];
+        return {
+            nextLv: currentLv + 1,
+            remaining: Math.max(0, targetQty - qty),
+            isMax: false
+        };
+    }
+
+    function calculateNextLevelExpGain(type, qty) {
+        const currentLv = calculateLevel(type, qty);
+        if (currentLv >= 10) return 0;
+        return levelExpValues[currentLv];
+    }
+
+    function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById('fabThemeBtn');
+        if (body.getAttribute('data-theme') === 'dark') {
+            body.setAttribute('data-theme', 'light');
+            btn.innerText = '☀️';
+            localStorage.setItem('rooc_theme', 'light');
+        } else {
+            body.setAttribute('data-theme', 'dark');
+            btn.innerText = '🌙';
+            localStorage.setItem('rooc_theme', 'dark');
+        }
+        document.getElementById('fabContainer').classList.remove('active');
+    }
+
+    function toggleFabMenu() {
+        document.getElementById('fabContainer').classList.toggle('active');
+    }
+
+    function toggleEditMode() {
+        document.body.classList.toggle('edit-mode-active');
+        document.getElementById('fabContainer').classList.remove('active');
+    }
+
+    function openRefModal() {
+        document.getElementById('refModalOverlay').classList.add('active');
+        document.getElementById('fabContainer').classList.remove('active');
+    }
+
+    function closeRefModal() {
+        document.getElementById('refModalOverlay').classList.remove('active');
+    }
+
+    function saveAllEditChanges() {
+        Object.keys(rawData).forEach(elem => {
+            rawData[elem].forEach((m, idx) => {
+                const nameInput = document.getElementById(`edit-name-${elem}-${idx}`);
+                const typeSelect = document.getElementById(`edit-type-${elem}-${idx}`);
+                
+                if (nameInput && typeSelect) {
+                    const newName = nameInput.value.trim();
+                    const newType = typeSelect.value;
+                    if (newName) {
+                        m.name = newName;
+                        m.type = newType;
+                        if (newType === 'Mini' || newType === 'MVP') {
+                            m.maxQty = 130;
+                        } else if (m.maxQty < 1000) {
+                            m.maxQty = 450000;
+                        }
+                    }
+                }
+            });
+        });
+
+        saveData();
+        toggleEditMode();
+        initElementPages();
+        renderFocusPage();
+        alert('บันทึกการแก้ไขเรียบร้อยแล้ว!');
+    }
+
+    function switchToHomeTab() {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        document.getElementById('focus').classList.add('active');
+        document.getElementById('fabContainer').classList.remove('active');
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        if (event && event.target) {
+            event.target.classList.add('active');
+        }
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function initElementPages() {
+        const container = document.getElementById('elementTabsContainer');
+        container.innerHTML = '';
+
+        Object.keys(rawData).forEach(elem => {
+            const div = document.createElement('div');
+            div.id = elem;
+            div.className = 'tab-content';
+
+            const monsters = rawData[elem];
+            let rowsHtml = '';
+            let currentRowLevels = [];
+
+            for (let i = 0; i < monsters.length; i += 5) {
+                const chunk = monsters.slice(i, i + 5);
+                let cellsHtml = '';
+                currentRowLevels = [];
+
+                chunk.forEach((m, chunkIdx) => {
+                    const globalIdx = i + chunkIdx;
+                    const currentLv = calculateLevel(m.type, m.qty);
+                    currentRowLevels.push(currentLv);
+
+                    const badgeClass = m.type === 'MVP' ? 'badge-mvp' : (m.type === 'Mini' ? 'badge-mini' : 'badge-monster');
+                    const nextLvData = calculateNextLevelTarget(m.type, m.qty);
+                    
+                    let nextLvText = nextLvData.isMax 
+                        ? `<span style="color: var(--primary);">MAX LV.10</span>` 
+                        : `ขาดอีก <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+
+                    cellsHtml += `
+                        <div class="monster-cell">
+                            <button class="delete-btn-symbol" onclick="deleteMonsterDirect('${elem}', ${globalIdx})" title="ลบมอนสเตอร์">-</button>
+                            
+                            <div style="margin-bottom: 2px;">
+                                <span class="badge ${badgeClass} monster-type-badge">${m.type}</span>
+                                <select id="edit-type-${elem}-${globalIdx}" class="edit-input-field">
+                                    <option value="Monster" ${m.type==='Monster'?'selected':''}>Monster</option>
+                                    <option value="Mini" ${m.type==='Mini'?'selected':''}>Mini</option>
+                                    <option value="MVP" ${m.type==='MVP'?'selected':''}>MVP</option>
+                                </select>
+                            </div>
+                            
+                            <div class="monster-name">
+                                <span class="monster-name-text" title="${m.name}">${m.name}</span>
+                                <input type="text" id="edit-name-${elem}-${globalIdx}" class="edit-input-field" value="${m.name}">
+                            </div>
+
+                            <div style="font-size: 12px; font-weight: bold; color: var(--accent-purple); margin-bottom: 4px;">Lv. <span id="lv-${elem}-${globalIdx}">${currentLv}</span></div>
+                            <input type="number" value="${m.qty}" onchange="updateQty('${elem}', ${globalIdx}, this.value)" style="width: 80px;">
+                            
+                            <div class="next-lv-info" id="next-info-${elem}-${globalIdx}">
+                                ${nextLvText}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                for (let c = chunk.length; c < 5; c++) {
+                    cellsHtml += `<div class="monster-cell" style="background: transparent; border: none;"></div>`;
+                }
+
+                let minRowLv = (chunk.length === 5) ? Math.min(...currentRowLevels) : 0;
+                let rowBgColor = getLevelColor(minRowLv);
+
+                rowsHtml += `
+                    <div class="row-group">
+                        <div class="row-header" id="row-header-${elem}-${i}" style="background-color: ${rowBgColor};">
+                            ${minRowLv}
+                        </div>
+                        <div class="grid-5">
+                            ${cellsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            div.innerHTML = `
+                <div class="card">
+                    <h2> ${elem}</h2>
+                    <div class="add-box">
+                        <strong style="color: var(--text);">เพิ่มมอนสเตอร์ใหม่:</strong>
+                        <input type="text" id="add-name-${elem}" placeholder="ชื่อมอนสเตอร์" style="width: 150px;">
+                        <select id="add-type-${elem}">
+                            <option value="Monster">Monster</option>
+                            <option value="Mini">Mini</option>
+                            <option value="MVP">MVP</option>
+                        </select>
+                        <input type="number" id="add-qty-${elem}" placeholder="ตีไปแล้ว QTY" style="width: 110px;" value="0">
+                        <button class="warning-btn" onclick="addMonster('${elem}')">➕ เพิ่ม</button>
+                    </div>
+                    ${rowsHtml}
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function deleteMonsterDirect(elem, idx) {
+        const name = rawData[elem][idx].name;
+        if (confirm(`คุณต้องการลบมอนสเตอร์ "${name}" ออกจากรายการใช่หรือไม่?`)) {
+            rawData[elem].splice(idx, 1);
+            saveData();
+            initElementPages();
+            renderFocusPage();
+        }
+    }
+
+    function addMonster(elem) {
+        const nameInput = document.getElementById(`add-name-${elem}`);
+        const typeInput = document.getElementById(`add-type-${elem}`);
+        const qtyInput = document.getElementById(`add-qty-${elem}`);
+
+        const name = nameInput.value.trim();
+        const type = typeInput.value;
+        const qty = parseInt(qtyInput.value) || 0;
+
+        let maxQty = 450000;
+        if (type === 'Mini' || type === 'MVP') {
+            maxQty = 130;
+        }
+
+        if (!name) {
+            alert('กรุณากรอกชื่อมอนสเตอร์');
+            return;
+        }
+
+        rawData[elem].push({ name, type, maxQty, qty });
+        saveData();
+
+        nameInput.value = '';
+        qtyInput.value = '0';
+
+        initElementPages();
+        renderFocusPage();
+    }
+
+    function updateQty(elem, idx, newQty) {
+        const val = parseInt(newQty) || 0;
+        rawData[elem][idx].qty = val;
+        saveData();
+
+        const item = rawData[elem][idx];
+        const currentLv = calculateLevel(item.type, val);
+        document.getElementById(`lv-${elem}-${idx}`).innerText = currentLv;
+
+        const nextLvData = calculateNextLevelTarget(item.type, val);
+        const nextInfoEl = document.getElementById(`next-info-${elem}-${idx}`);
+        if (nextInfoEl) {
+            nextInfoEl.innerHTML = nextLvData.isMax 
+                ? `<span style="color: var(--primary);">MAX LV.10</span>` 
+                : `ขาดอีก <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+        }
+
+        updateRowHeaders(elem);
+        renderFocusPage();
+    }
+
+    function updateRowHeaders(elem) {
+        const monsters = rawData[elem];
+        for (let i = 0; i < monsters.length; i += 5) {
+            const chunk = monsters.slice(i, i + 5);
+            let rowLvList = chunk.map((m) => calculateLevel(m.type, m.qty));
+            let minLv = (chunk.length === 5) ? Math.min(...rowLvList) : 0;
+            
+            const headerEl = document.getElementById(`row-header-${elem}-${i}`);
+            if (headerEl) {
+                headerEl.innerText = `${minLv}`;
+                headerEl.style.backgroundColor = getLevelColor(minLv);
+            }
+        }
+    }
+
+    function renderFocusPage() {
+        const filterVal = parseInt(document.getElementById('maxNextFilterInput').value) || 300000;
+
+        let allMonsters = [];
+        let allMvps = [];
+        let totalAccumulatedExp = 0;
+
+        Object.keys(rawData).forEach(elem => {
+            const monsters = rawData[elem];
+            for (let i = 0; i < monsters.length; i += 5) {
+                const chunk = monsters.slice(i, i + 5);
+                let rowLvList = chunk.map(m => calculateLevel(m.type, m.qty));
+                let minLv = (chunk.length === 5) ? Math.min(...rowLvList) : 0;
+                
+                if (minLv > 0) {
+                    totalAccumulatedExp += levelExpValues[minLv - 1];
+                }
+            }
+
+            monsters.forEach(m => {
+                const nextData = calculateNextLevelTarget(m.type, m.qty);
+                const nextExpGain = calculateNextLevelExpGain(m.type, m.qty);
+                const item = { 
+                    ...m, 
+                    element: elem, 
+                    nextRemaining: nextData.remaining, 
+                    nextLv: nextData.nextLv,
+                    isMax: nextData.isMax,
+                    nextExpGain: nextExpGain 
+                };
+                
+                if (m.type === 'MVP') {
+                    const mvpNext = m.maxQty - m.qty;
+                    allMvps.push({ ...m, element: elem, next: mvpNext });
+                } else if (m.type === 'Monster' || m.type === 'Mini') {
+                    allMonsters.push(item);
+                }
+            });
+        });
+
+        document.getElementById('totalExpDisplay').innerText = `${totalAccumulatedExp.toLocaleString()} แต้ม`;
+
+        let validMonsters = allMonsters.filter(m => !m.isMax && m.nextRemaining < filterVal);
+        validMonsters.sort((a, b) => a.nextRemaining - b.nextRemaining);
+
+        let monsterHtml = '';
+        validMonsters.forEach(m => {
+            const badgeClass = m.type === 'Mini' ? 'badge-mini' : 'badge-monster';
+            monsterHtml += `
+                <tr>
+                    <td><strong style="color: var(--text);">${m.name}</strong></td>
+                    <td><span class="badge ${badgeClass}">${m.type}</span></td>
+                    <td>${m.element}</td>
+                    <td>${m.nextRemaining.toLocaleString()} (ถึง Lv.${m.nextLv})</td>
+                    <td><span style="color: var(--primary); font-weight: bold;">${m.nextExpGain.toLocaleString()} EXP</span></td>
+                </tr>
+            `;
+        });
+        document.getElementById('focusMonsterBody').innerHTML = monsterHtml || `<tr><td colspan="5" style="color: var(--text-muted);">ไม่มีมอนสเตอร์ที่ขาดน้อยกว่า ${filterVal.toLocaleString()} ตัว</td></tr>`;
+
+        allMvps.sort((a, b) => {
+            const aDone = a.next <= 0;
+            const bDone = b.next <= 0;
+            if (aDone && !bDone) return 1;
+            if (!aDone && bDone) return -1;
+            return a.next - b.next;
+        });
+
+        let mvpHtml = '';
+        allMvps.forEach(m => {
+            const isDone = m.qty >= 130 || m.next <= 0;
+            const nextDisplay = isDone 
+                ? `<span style="color: #10B981; font-weight: bold;">DONE</span>` 
+                : m.next.toLocaleString();
+
+            mvpHtml += `
+                <tr>
+                    <td><strong style="color: var(--text);">${m.name}</strong></td>
+                    <td><span class="badge badge-mvp">${m.type}</span></td>
+                    <td>${m.element}</td>
+                    <td>${nextDisplay}</td>
+                </tr>
+            `;
+        });
+        document.getElementById('focusMvpBody').innerHTML = mvpHtml || `<tr><td colspan="4" style="color: var(--text-muted);">ไม่มีข้อมูล MVP</td></tr>`;
+    }
+
+    initElementPages();
+    renderFocusPage();
+</script>
+
+</body>
+</html>
