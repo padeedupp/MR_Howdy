@@ -493,7 +493,7 @@
         <div class="header-right">
             <div class="total-exp-box-mini">
                 <p class="label">EXP สะสมรวม (Research Progress)</p>
-                <p class="exp-number" id="totalExpDisplay">0 แต้ม</p>
+                <p class="exp-number" id="totalExpDisplay">0 exp</p>
             </div>
         </div>
     </div>
@@ -939,7 +939,7 @@
                     
                     let nextLvText = nextLvData.isMax 
                         ? `<span style="color: var(--primary);">MAX LV.10</span>` 
-                        : `ขาดอีก <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+                        : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
 
                     cellsHtml += `
                         <div class="monster-cell">
@@ -1062,7 +1062,7 @@
         if (nextInfoEl) {
             nextInfoEl.innerHTML = nextLvData.isMax 
                 ? `<span style="color: var(--primary);">MAX LV.10</span>` 
-                : `ขาดอีก <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
+                : ` <strong>${nextLvData.remaining.toLocaleString()}</strong> ถึง Lv.${nextLvData.nextLv}`;
         }
 
         updateRowHeaders(elem);
@@ -1124,7 +1124,7 @@
             });
         });
 
-        document.getElementById('totalExpDisplay').innerText = `${totalAccumulatedExp.toLocaleString()} แต้ม`;
+        document.getElementById('totalExpDisplay').innerText = `${totalAccumulatedExp.toLocaleString()} exp`;
 
         let validMonsters = allMonsters.filter(m => !m.isMax && m.nextRemaining < filterVal);
         validMonsters.sort((a, b) => a.nextRemaining - b.nextRemaining);
