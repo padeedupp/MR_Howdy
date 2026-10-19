@@ -613,22 +613,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td><strong>Lv.1</strong></td><td>10</td><td>1</td><td><strong style="color: #ffffff;">300 EXP</strong></td></tr>
-                <tr><td><strong>Lv.2</strong></td><td>500</td><td>3</td><td><strong style="color: #ffffff;">500 EXP</strong></td></tr>
-                <tr><td><strong>Lv.3</strong></td><td>3,500</td><td>7</td><td><strong style="color: #ffffff;">800 EXP</strong></td></tr>
-                <tr><td><strong>Lv.4</strong></td><td>10,000</td><td>14</td><td><strong style="color: #ffffff;">1,200 EXP</strong></td></tr>
-                <tr><td><strong>Lv.5</strong></td><td>22,000</td><td>25</td><td><strong style="color: #ffffff;">1,600 EXP</strong></td></tr>
-                <tr><td><strong>Lv.6</strong></td><td>48,000</td><td>40</td><td><strong style="color: #ffffff;">2,000 EXP</strong></td></tr>
-                <tr><td><strong>Lv.7</strong></td><td>100,000</td><td>55</td><td><strong style="color: #ffffff;">2,400 EXP</strong></td></tr>
-                <tr><td><strong>Lv.8</strong></td><td>175,000</td><td>75</td><td><strong style="color: #ffffff;">2,800 EXP</strong></td></tr>
-                <tr><td><strong>Lv.9</strong></td><td>300,000</td><td>100</td><td><strong style="color: #ffffff;">3,200 EXP</strong></td></tr>
-                <tr><td><strong>Lv.10</strong></td><td>450,000</td><td>130</td><td><strong style="color: #ffffff;">4,000 EXP</strong></td></tr>
+                <tr><td><strong>Lv.1</strong></td><td>10</td><td>1</td><td><strong style="color: #ffffff;">300 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.2</strong></td><td>500</td><td>3</td><td><strong style="color: #ffffff;">500 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.3</strong></td><td>3,500</td><td>7</td><td><strong style="color: #ffffff;">800 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.4</strong></td><td>10,000</td><td>14</td><td><strong style="color: #ffffff;">1,200 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.5</strong></td><td>22,000</td><td>25</td><td><strong style="color: #ffffff;">1,600 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.6</strong></td><td>48,000</td><td>40</td><td><strong style="color: #ffffff;">2,000 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.7</strong></td><td>100,000</td><td>55</td><td><strong style="color: #ffffff;">2,400 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.8</strong></td><td>175,000</td><td>75</td><td><strong style="color: #ffffff;">2,800 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.9</strong></td><td>300,000</td><td>100</td><td><strong style="color: #ffffff;">3,200 EXP</strong>[cite: 1]</td></tr>
+                <tr><td><strong>Lv.10</strong></td><td>450,000</td><td>130</td><td><strong style="color: #ffffff;">4,000 EXP</strong>[cite: 1]</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
 <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxZHfVK7PODU1JylrA1tAZ9OUdPrzdDdWUiQrwAoKYLi6_kmTyZmNsd9I2xlmnoEA9EA/exec";
+
     const researchData = {
         "Monster": { thresholds: [10, 500, 3500, 10000, 22000, 48000, 100000, 175000, 300000, 450000] },
         "Mini": { thresholds: [1, 3, 7, 14, 25, 40, 55, 75, 100, 130] },
@@ -637,7 +639,6 @@
 
     const levelExpValues = [300, 500, 800, 1200, 1600, 2000, 2400, 2800, 3200, 4000];
 
-    // ฟังก์ชันช่วยรวมผลสะสม EXP ตั้งแต่เลเวล 1 จนถึงเลเวลเป้าหมาย
     function getCumulativeExp(targetLv) {
         let total = 0;
         for (let i = 0; i < targetLv && i < levelExpValues.length; i++) {
@@ -654,128 +655,7 @@
         return colors[lv] || "#30363D";
     }
 
-    const rawData = {
-        "NONE": [
-            { name: "Lunatic", type: "Monster", maxQty: 450000, qty: 132789 },
-            { name: "Peco Peco Egg", type: "Monster", maxQty: 450000, qty: 332163 },
-            { name: "Ant Egg", type: "Monster", maxQty: 300000, qty: 185423 },
-            { name: "Eclipse", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Golem", type: "Monster", maxQty: 175000, qty: 100917 },
-            { name: "Mimic", type: "Monster", maxQty: 300000, qty: 214162 },
-            { name: "Phreeoni", type: "MVP", maxQty: 130, qty: 130 },
-            { name: "Sasquatch", type: "Monster", maxQty: 300000, qty: 201398 },
-            { name: "Rideword", type: "Monster", maxQty: 100000, qty: 60596 },
-            { name: "Rybio", type: "Monster", maxQty: 175000, qty: 137490 },
-            { name: "Alice", type: "Monster", maxQty: 100000, qty: 59454 }
-        ],
-        "WIND": [
-            { name: "Chonchon", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Condor", type: "Monster", maxQty: 300000, qty: 231810 },
-            { name: "Creamy", type: "Monster", maxQty: 450000, qty: 341322 },
-            { name: "Dragon Fly", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Steel Chonchon", type: "Monster", maxQty: 450000, qty: 407792 },
-            { name: "Goblin (Dagger)", type: "Monster", maxQty: 450000, qty: 346254 },
-            { name: "Rotar Zario", type: "Monster", maxQty: 300000, qty: 286540 },
-            { name: "Goblin (Steam)", type: "Monster", maxQty: 450000, qty: 455000 },
-            { name: "Goblin Leader", type: "MVP", maxQty: 130, qty: 124 },
-            { name: "Stem Worm", type: "Monster", maxQty: 450000, qty: 421977 },
-            { name: "Hornet", type: "Monster", maxQty: 300000, qty: 287280 },
-            { name: "Dustiness", type: "Monster", maxQty: 300000, qty: 242362 }
-        ],
-        "EARTH": [
-            { name: "Pupa", type: "Monster", maxQty: 300000, qty: 177441 },
-            { name: "Fabre", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Willow", type: "Monster", maxQty: 175000, qty: 145320 },
-            { name: "Savage Babe", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Worm Tail", type: "Monster", maxQty: 300000, qty: 189277 },
-            { name: "Yoyo", type: "Monster", maxQty: 450000, qty: 336231 },
-            { name: "Smokie", type: "Monster", maxQty: 450000, qty: 302521 },
-            { name: "Boa", type: "Monster", maxQty: 300000, qty: 210453 },
-            { name: "Bigfoot", type: "Monster", maxQty: 300000, qty: 253691 },
-            { name: "Steel Fur Grizzly", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Rocker", type: "Monster", maxQty: 175000, qty: 124580 },
-            { name: "Vocal", type: "Mini", maxQty: 130, qty: 130 }
-        ],
-        "FIRE": [
-            { name: "Picky", type: "Monster", maxQty: 300000, qty: 181930 },
-            { name: "Super Picky", type: "Monster", maxQty: 300000, qty: 249344 },
-            { name: "Drops", type: "Monster", maxQty: 175000, qty: 110006 },
-            { name: "Baby Desert Wolf", type: "Monster", maxQty: 300000, qty: 188666 },
-            { name: "Scorpion", type: "Monster", maxQty: 300000, qty: 213865 },
-            { name: "Choco", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Peco Peco", type: "Monster", maxQty: 450000, qty: 300000 },
-            { name: "Elder Willow", type: "Monster", maxQty: 175000, qty: 167428 },
-            { name: "Golden Thief Bug", type: "MVP", maxQty: 130, qty: 111 },
-            { name: "Goblin (Hammer)", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Metaller", type: "Monster", maxQty: 300000, qty: 182864 },
-            { name: "Minorous", type: "Monster", maxQty: 300000, qty: 211264 }
-        ],
-        "WATER": [
-            { name: "Poring", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Spore", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Mastering", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Hydra", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Plankton", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Roda Frog", type: "Monster", maxQty: 450000, qty: 500000 },
-            { name: "Toad", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Thara Frog", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Marina", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Marine Sphere", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Ambernite", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Vadon", type: "Monster", maxQty: 450000, qty: 450000 }
-        ],
-        "POISON": [
-            { name: "Poporing", type: "Monster", maxQty: 450000, qty: 424910 },
-            { name: "Poison Spore", type: "Monster", maxQty: 450000, qty: 450253 },
-            { name: "Argos", type: "Monster", maxQty: 450000, qty: 348486 },
-            { name: "Argiope", type: "Monster", maxQty: 300000, qty: 285672 },
-            { name: "Side Winder", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Goblin (Archer)", type: "Monster", maxQty: 300000, qty: 289999 },
-            { name: "Myst", type: "Monster", maxQty: 300000, qty: 179862 },
-            { name: "Penomena", type: "Monster", maxQty: 175000, qty: 161111 },
-            { name: "Cramp", type: "Monster", maxQty: 300000, qty: 244934 },
-            { name: "Hammer Kobold", type: "Monster", maxQty: 300000, qty: 285570 }
-        ],
-        "HOLY": [
-            { name: "Angeling", type: "MVP", maxQty: 130, qty: 130 }
-        ],
-        "SHADOW": [
-            { name: "Thief Bug Egg", type: "Monster", maxQty: 300000, qty: 245371 },
-            { name: "Thief Bug", type: "Monster", maxQty: 450000, qty: 354272 },
-            { name: "Tarou", type: "Monster", maxQty: 450000, qty: 355792 },
-            { name: "Thief Bug Female", type: "Monster", maxQty: 300000, qty: 276065 },
-            { name: "Thief Bug Male", type: "Monster", maxQty: 300000, qty: 187378 },
-            { name: "Familiar", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Drainliar", type: "Monster", maxQty: 450000, qty: 450000 },
-            { name: "Deviling", type: "MVP", maxQty: 130, qty: 97 },
-            { name: "Matyr", type: "Monster", maxQty: 175000, qty: 131054 },
-            { name: "Infernal Goblin", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Isis", type: "Monster", maxQty: 300000, qty: 175000 },
-            { name: "Requiem", type: "Monster", maxQty: 100000, qty: 95376 }
-        ],
-        "GHOST": [
-            { name: "Whisper", type: "Monster", maxQty: 300000, qty: 241625 },
-            { name: "Eggyra", type: "Monster", maxQty: 450000, qty: 335635 },
-            { name: "Nightmare", type: "Monster", maxQty: 300000, qty: 194655 },
-            { name: "Ghostring", type: "Mini", maxQty: 130, qty: 130 },
-            { name: "Marionette", type: "Monster", maxQty: 450000, qty: 450000 }
-        ],
-        "UNDEAD": [
-            { name: "Zombie", type: "Monster", maxQty: 450000, qty: 403602 },
-            { name: "Munak", type: "Monster", maxQty: 450000, qty: 404761 },
-            { name: "Bongun", type: "Monster", maxQty: 300000, qty: 200890 },
-            { name: "Orc zombie", type: "Monster", maxQty: 450000, qty: 304174 },
-            { name: "Ghoul", type: "Monster", maxQty: 450000, qty: 300068 },
-            { name: "Skeleton", type: "Monster", maxQty: 300000, qty: 273997 },
-            { name: "Pirate Skeleton", type: "Monster", maxQty: 300000, qty: 294828 },
-            { name: "Soldier Skeleton", type: "Monster", maxQty: 450000, qty: 373657 },
-            { name: "Archer Skeleton", type: "Monster", maxQty: 300000, qty: 280984 },
-            { name: "Drake", type: "MVP", maxQty: 130, qty: 130 },
-            { name: "Megalodon", type: "Monster", maxQty: 175000, qty: 114617 },
-            { name: "Mummy", type: "Monster", maxQty: 450000, qty: 550009 }
-        ]
-    };
-
+    let rawData = null;
     let maxNextFilter = 300000;
     let currentTheme = 'dark';
     let currentActiveTab = 'NONE';
@@ -783,6 +663,36 @@
     document.body.setAttribute('data-theme', currentTheme);
     document.getElementById('fabThemeBtn').innerText = '🌙';
     document.getElementById('maxNextFilterInput').value = maxNextFilter;
+
+    // ฟังก์ชันซิงค์ข้อมูลขึ้น Google Drive
+    function saveDataToCloud() {
+        if (!rawData) return;
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rawData)
+        }).then(() => {
+            console.log("Saved to Google Drive successfully");
+        }).catch(err => {
+            console.error("Error saving data:", err);
+        });
+    }
+
+    // โหลดข้อมูลจาก Google Drive ตอนเปิดเว็บ
+    function loadDataFromCloud() {
+        fetch(SCRIPT_URL)
+            .then(res => res.json())
+            .then(data => {
+                rawData = data;
+                initElementPages();
+                renderFocusPage();
+            })
+            .catch(err => {
+                console.error("Failed to load cloud data, using fallback:", err);
+                alert("ไม่สามารถเชื่อมต่อข้อมูลออนไลน์ได้ กรุณาตรวจสอบอินเทอร์เน็ตหรือ Apps Script");
+            });
+    }
 
     function saveMaxNextFilter(val) {
         maxNextFilter = parseInt(val) || 300000;
@@ -796,6 +706,7 @@
                     m.qty = 0;
                 });
             });
+            saveDataToCloud();
             initElementPages();
             renderFocusPage();
         }
@@ -889,10 +800,11 @@
             });
         });
 
+        saveDataToCloud();
         toggleEditMode();
         initElementPages();
         renderFocusPage();
-        alert('อัปเดตข้อมูลเรียบร้อยแล้ว!');
+        alert('บันทึกข้อมูลลง Google Drive เรียบร้อยแล้ว!');
     }
 
     function switchToHomeTab() {
@@ -910,14 +822,32 @@
         
         if (btnElement) {
             btnElement.classList.add('active');
+        } else {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => {
+                if(b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId)) {
+                    b.classList.add('active');
+                }
+            });
         }
-        document.getElementById(tabId).classList.add('active');
+        
+        const targetTab = document.getElementById(tabId);
+        if (targetTab) {
+            targetTab.classList.add('active');
+        }
         currentActiveTab = tabId;
     }
 
     function initElementPages() {
+        if (!rawData) return;
         const container = document.getElementById('elementTabsContainer');
         container.innerHTML = '';
+
+        if (currentActiveTab === 'focus') {
+            document.getElementById('focus').classList.add('active');
+        } else {
+            setTimeout(() => switchTab(currentActiveTab), 10);
+        }
 
         Object.keys(rawData).forEach(elem => {
             const div = document.createElement('div');
@@ -1017,6 +947,7 @@
         const name = rawData[elem][idx].name;
         if (confirm(`คุณต้องการลบมอนสเตอร์ "${name}" ออกจากรายการใช่หรือไม่?`)) {
             rawData[elem].splice(idx, 1);
+            saveDataToCloud();
             initElementPages();
             renderFocusPage();
         }
@@ -1043,6 +974,7 @@
 
         currentActiveTab = elem;
         rawData[elem].push({ name, type, maxQty, qty });
+        saveDataToCloud();
 
         initElementPages();
         renderFocusPage();
@@ -1051,6 +983,7 @@
     function updateQty(elem, idx, newQty) {
         const val = parseInt(newQty) || 0;
         rawData[elem][idx].qty = val;
+        saveDataToCloud();
 
         const item = rawData[elem][idx];
         const currentLv = calculateLevel(item.type, val);
@@ -1089,6 +1022,7 @@
     }
 
     function renderFocusPage() {
+        if (!rawData) return;
         const filterVal = parseInt(document.getElementById('maxNextFilterInput').value) || 300000;
 
         let allMonsters = [];
@@ -1098,7 +1032,6 @@
         Object.keys(rawData).forEach(elem => {
             const monsters = rawData[elem];
             
-            // 1. คำนวณ EXP สะสมจากเลเวลรายตัว (ตั้งแต่ Lv.1 ถึงเลเวลปัจจุบันของมอนสเตอร์แต่ละตัว)
             monsters.forEach(m => {
                 const currentLv = calculateLevel(m.type, m.qty);
                 if (currentLv > 0) {
@@ -1106,7 +1039,6 @@
                 }
             });
 
-            // 2. คำนวณ EXP สะสมจากเลเวลแถว (ตั้งแต่ Lv.1 ถึงเลเวลต่ำสุดของแต่ละแถว)
             for (let i = 0; i < monsters.length; i += 5) {
                 const chunk = monsters.slice(i, i + 5);
                 let rowLvList = chunk.map(m => calculateLevel(m.type, m.qty));
@@ -1138,7 +1070,6 @@
             });
         });
 
-        // นำ (1) ผลรวมเลเวลรายตัว + (2) ผลรวมเลเวลแถว มารวมกันแสดงผล
         document.getElementById('totalExpDisplay').innerText = `${totalAccumulatedExp.toLocaleString()} exp`;
 
         let validMonsters = allMonsters.filter(m => !m.isMax && m.nextRemaining < filterVal);
@@ -1186,8 +1117,8 @@
         document.getElementById('focusMvpBody').innerHTML = mvpHtml || `<tr><td colspan="4" style="color: var(--text-muted);">ไม่มีข้อมูล MVP</td></tr>`;
     }
 
-    initElementPages();
-    renderFocusPage();
+    // เริ่มโหลดข้อมูลจาก Google Drive ทันทีเมื่อเปิดหน้าเว็บ
+    loadDataFromCloud();
 </script>
 
 </body>
