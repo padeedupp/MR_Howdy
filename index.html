@@ -629,7 +629,7 @@
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxZHfVK7PODU1JylrA1tAZ9OUdPrzdDdWUiQrwAoKYLi6_kmTyZmNsd9I2xlmnoEA9EA/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzN1JHdBMLBDTESvSTJS1Y2-rqFn8pqH9kdg9wUJ6QgbG3RJUZAOkfVR9xmLIHv1W-opw/exec";
 
     const researchData = {
         "Monster": { thresholds: [10, 500, 3500, 10000, 22000, 48000, 100000, 175000, 300000, 450000] },
@@ -687,8 +687,8 @@
                 renderFocusPage();
             })
             .catch(err => {
-                console.error("Failed to load cloud data, using fallback:", err);
-                alert("ไม่สามารถเชื่อมต่อข้อมูลออนไลน์ได้ กรุณาตรวจสอบอินเทอร์เน็ตหรือ Apps Script");
+                console.error("Failed to load cloud data:", err);
+                alert("ไม่สามารถเชื่อมต่อข้อมูลออนไลน์ได้ กรุณาตรวจสอบลิงก์ Apps Script หรือสิทธิ์การเข้าถึง");
             });
     }
 
