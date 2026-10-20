@@ -304,21 +304,23 @@
             flex-wrap: wrap;
             align-items: center;
         }
-  .warning-btn {
-    background: #10B981; /* เปลี่ยนเป็นสีเขียว */
-    color: #ffffff;      /* เปลี่ยนตัวหนังสือเป็นสีขาวเพื่อให้ดูสบายตา */
-    border: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); /* เพิ่มเรืองแสงเบาๆ ให้เข้ากับธีม */
-}
-.warning-btn:hover {
-    background: #059669; /* สีเขียวเข้มขึ้นเมื่อเอาเมาส์ไปชี้ */
-}
-        /* --- Floating Speed Dial Menu มุมขวาล่าง (ปุ่ม ^) --- */
+        
+        /* ปรับสีปุ่มเป็นสีเขียวนีออน / Emerald (#10B981) */
+        .warning-btn {
+            background: #10B981;
+            color: #ffffff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+        }
+        .warning-btn:hover {
+            background: #059669;
+        }
+
         .fab-container {
             position: fixed;
             bottom: 25px;
@@ -415,7 +417,6 @@
             box-shadow: 0 0 12px var(--warning);
         }
 
-        /* Modal Reference Table Pop-up */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -498,7 +499,6 @@
         </div>
     </div>
 
-    <!-- Tab Navigation (เฉพาะธาตุ) -->
     <div class="tabs" id="elementalTabsNav">
         <button class="tab-btn active" onclick="switchTab('NONE', this)">NONE</button>
         <button class="tab-btn" onclick="switchTab('WIND', this)">WIND</button>
@@ -512,12 +512,10 @@
         <button class="tab-btn" onclick="switchTab('UNDEAD', this)">UNDEAD</button>
     </div>
 
-    <!-- แถบปุ่ม SAVE ขวาบน (ใต้แถบธาตุ) -->
     <div class="sub-bar-action">
         <button class="btn-save-banner" onclick="saveAllEditChanges()">💾 SAVE</button>
     </div>
 
-    <!-- 1. Page HOME -->
     <div id="focus" class="tab-content">
         <div class="card">
             <h2>HOME Settings & MVP</h2>
@@ -565,12 +563,10 @@
         </div>
     </div>
 
-    <!-- 2. Elemental Tabs Container -->
     <div id="elementTabsContainer"></div>
 
 </div>
 
-<!-- Floating Speed Dial Menu มุมขวาล่าง (ปุ่ม ^) -->
 <div class="fab-container" id="fabContainer">
     <button class="fab-main" onclick="toggleFabMenu()" title="เมนูลัด">^</button>
     <div class="fab-options">
@@ -593,7 +589,6 @@
     </div>
 </div>
 
-<!-- Modal Reference Table Pop-up -->
 <div class="modal-overlay" id="refModalOverlay">
     <div class="modal-box">
         <div class="modal-header">
@@ -664,6 +659,7 @@
     document.getElementById('fabThemeBtn').innerText = '🌙';
     document.getElementById('maxNextFilterInput').value = maxNextFilter;
 
+    // ฟังก์ชันส่งข้อมูลกลับไปบันทึกบน Google Drive
     function saveDataToCloud() {
         if (!rawData) return;
         fetch(SCRIPT_URL, {
@@ -678,18 +674,25 @@
         });
     }
 
+    // Callback Function สำหรับรับข้อมูลจาก JSONP
+    function handleCloudData(data) {
+        if (data && !data.error) {
+            rawData = data;
+            initElementPages();
+            renderFocusPage();
+        } else {
+            console.error("Cloud data error:", data);
+        }
+    }
+
+    // ดึงข้อมูลผ่าน JSONP หลบเลี่ยงปัญหา CORS
     function loadDataFromCloud() {
-        fetch(SCRIPT_URL, { method: 'GET', mode: 'cors' })
-            .then(res => res.json())
-            .then(data => {
-                rawData = data;
-                initElementPages();
-                renderFocusPage();
-            })
-            .catch(err => {
-                console.error("Failed to load cloud data:", err);
-                alert("ไม่สามารถเชื่อมต่อข้อมูลออนไลน์ได้ กรุณาตรวจสอบสิทธิ์ของไฟล์ Google Drive และตรวจสอบว่าได้ Deploy เป็น New version แล้วหรือยัง");
-            });
+        const script = document.createElement('script');
+        script.src = SCRIPT_URL + '?callback=handleCloudData';
+        script.onerror = function() {
+            console.error("Failed to load script via JSONP");
+        };
+        document.body.appendChild(script);
     }
 
     function saveMaxNextFilter(val) {
