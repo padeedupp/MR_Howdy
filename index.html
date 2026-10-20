@@ -304,20 +304,20 @@
             flex-wrap: wrap;
             align-items: center;
         }
-        .warning-btn {
-            background: var(--warning);
-            color: #0A0E17;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .warning-btn:hover {
-            background: var(--warning-hover);
-        }
-
+  .warning-btn {
+    background: #10B981; /* เปลี่ยนเป็นสีเขียว */
+    color: #ffffff;      /* เปลี่ยนตัวหนังสือเป็นสีขาวเพื่อให้ดูสบายตา */
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4); /* เพิ่มเรืองแสงเบาๆ ให้เข้ากับธีม */
+}
+.warning-btn:hover {
+    background: #059669; /* สีเขียวเข้มขึ้นเมื่อเอาเมาส์ไปชี้ */
+}
         /* --- Floating Speed Dial Menu มุมขวาล่าง (ปุ่ม ^) --- */
         .fab-container {
             position: fixed;
