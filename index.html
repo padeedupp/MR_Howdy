@@ -664,7 +664,6 @@
     document.getElementById('fabThemeBtn').innerText = '🌙';
     document.getElementById('maxNextFilterInput').value = maxNextFilter;
 
-    // ฟังก์ชันซิงค์ข้อมูลขึ้น Google Drive
     function saveDataToCloud() {
         if (!rawData) return;
         fetch(SCRIPT_URL, {
@@ -679,7 +678,6 @@
         });
     }
 
-    // โหลดข้อมูลจาก Google Drive ตอนเปิดเว็บ
     function loadDataFromCloud() {
         fetch(SCRIPT_URL)
             .then(res => res.json())
@@ -1117,7 +1115,6 @@
         document.getElementById('focusMvpBody').innerHTML = mvpHtml || `<tr><td colspan="4" style="color: var(--text-muted);">ไม่มีข้อมูล MVP</td></tr>`;
     }
 
-    // เริ่มโหลดข้อมูลจาก Google Drive ทันทีเมื่อเปิดหน้าเว็บ
     loadDataFromCloud();
 </script>
 
